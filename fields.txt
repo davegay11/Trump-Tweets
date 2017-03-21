@@ -1,6 +1,6 @@
 This file contains information about the fields in the cleaned data set.
 
-Total tweets: 2795
+Total tweets: 26745
 Number of fields: 12
 
 +----------------+---------------------------------------------+------+----------+------------------------------------------------+

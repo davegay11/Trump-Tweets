@@ -12,9 +12,7 @@ This is the official repository for The Trump's Tweets team in Professor Herron'
 
 ## Files
 
-`Data_Collection.ipynb` contains the code relating the collection of all of Trump's tweets using the Tweepy API. It saves a single file - `trumps_tweets.json`, which contains all of the fields that are accessible from the API.
-
-`data_cleaning.ipynb` contains the code relating to the cleaning of the tweets saved in the json file. It outputs a json and csv file in the `clean_data` directory, representing the final, cleaned data.
+`data_cleaning.ipynb` contains the code relating to the cleaning of the tweets saved in the json files in `./data/trump_tweet_data_archive/master_YEAR.json`. It outputs a json and csv file in the `clean_data` directory, representing the final, cleaned data.
 
 `fields.txt` contains an ascii table describing each field in the cleaned data and what values it can take on.
 
