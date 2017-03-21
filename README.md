@@ -16,6 +16,8 @@ This is the official repository for The Trump's Tweets team in Professor Herron'
 
 `data_cleaning.ipynb` contains the code relating to the cleaning of the tweets saved in the json file. It outputs a json and csv file in the `clean_data` directory, representing the final, cleaned data.
 
+`fields.txt` contains an ascii table describing each field in the cleaned data and what values it can take on.
+
 ## Licence
 
 This data is made available under the Public Domain Dedication and License version v1.0 whose full text can be found at http://opendatacommons.org/licenses/pddl/

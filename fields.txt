@@ -1,0 +1,41 @@
+This file contains information about the fields in the cleaned data set.
+
+Total tweets: 2795
+Number of fields: 12
+
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| field name     | Explanation                                 | Type | Optional | Value range                                    |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| truncated      | Indicates whether the value of the text     | bool | false    | True, False                                    |
+|                | parameter was truncated, for example,       |      |          |                                                |
+|                | as a result of a retweet exceeding the      |      |          |                                                |
+|                | 140 character Tweet length. Truncated       |      |          |                                                |
+|                | text will end in ellipsis, like this ...    |      |          |                                                |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| text           | The text of the tweet                       | str  | false    | len(text) <= 140                               |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| id             | Unique id of the tweet (among ALL           | int  | false    | value > 0                                      |
+|                | tweets)                                     |      |          |                                                |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| favorite_count | Number of favorites                         | int  | false    | value > 0                                      |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| source         | Where the tweet was sent from, whether      | str  | false    | one of 'instagram', 'web', 'ipad', 'android',  |
+|                | it be a device (iphone, android) or a       |      |          | 'iphone', 'ads', 'periscope', 'media'          |
+|                |  third party app like periscope.            |      |          |                                                |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| retweeted      | Whether or not the tweet was a retweet of   | bool | false    | True, False                                    |
+|                | someone else's tweet                        |      |          |                                                |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| retweet_count  | Number of retweets                          | int  | false    | value > 0                                      |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| favorited      | Whether Trump favorited the tweet           | bool | false    | True, False                                    |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| lang           | Language of the tweet                       | str  | false    | lang code from                                 |
+|                |                                             |      |          | https://dev.twitter.com/web/overview/languages |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| created_at     | Timestamp of when the tweet was created     | str  | false    | UTC formatted timestamp string                 |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
+| clean_text     | Text with punctuation, special characters,  | str  | false    | len(clean_text) <= len(text)                   |
+|                | urls and stop words removed. Will be used   |      |          |                                                |
+|                | to generate bag of words / other NLP models |      |          |                                                |
++----------------+---------------------------------------------+------+----------+------------------------------------------------+
