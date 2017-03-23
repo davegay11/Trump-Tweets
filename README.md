@@ -18,4 +18,4 @@ This is the official repository for The Trump's Tweets team in Professor Herron'
 
 ## Licence
 
-This data is made available under the Public Domain Dedication and License version v1.0 whose full text can be found at http://opendatacommons.org/licenses/pddl/
+This data is made available under the Public Domain Dedication and License version v1.0 whose full text can be found at http://opendatacommons.org/licenses/pddl/ or located in license.txt within this repository.
