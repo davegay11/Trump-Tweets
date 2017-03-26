@@ -10,7 +10,11 @@
 
 This is the official repository for The Trump's Tweets team in Professor Herron's Humanities: Data Mining + Meaning class at Duke University.
 
-## Files
+## Raw data
+
+The raw data can be found in `./data/trump_tweet_data_archive/`, and was pulled from [The Trump Twitter Archive](http://www.trumptwitterarchive.com/)
+
+## Cleaning
 
 `data_cleaning.ipynb` contains the code relating to the cleaning of the tweets saved in the json files in `./data/trump_tweet_data_archive/master_YEAR.json`. It outputs a json and csv file in the `clean_data` directory, representing the final, cleaned data.
 
