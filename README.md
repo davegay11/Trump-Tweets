@@ -22,7 +22,7 @@ The raw data can be found in `./data/trump_tweet_data_archive/`, and was pulled 
 
 ## Representations / Analysis
 
-Because we had our data cleaned a bit early, we started using it to perform some basic analysis of his tweets. The files `bag_of_words.ipynb`, `n_gram.ipynb`, and `word2vec.ipynb` found in the 'representations' directory all create different NLP representations of his tweets, and start to try to make sense of them. As the project progresses we will clean up / add more to these files.
+Because we had our data cleaned a bit early, we started using it to perform some basic analysis of his tweets. The files `bag_of_words.ipynb`, `n_gram.ipynb`, and `word2vec.ipynb` all create different NLP representations of his tweets, and start to try to make sense of them. As the project progresses we will clean up / add more to these files.
 
 ## Licence
 
