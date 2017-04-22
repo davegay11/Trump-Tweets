@@ -2,15 +2,20 @@ import pandas as pd
 from nltk.corpus import stopwords
 import json
 import csv
+import os
 import re
 import nltk
 
-def get_raw_data(filename):
+main_path = os.path.join(os.path.dirname(__file__), './../')
+
+def get_raw_data(path):
     '''Get the raw json data downloaded from the tweepy API'''
-    data = None
-    with open(filename) as f:
-        data = json.load(f)
-    return data
+    tweets = []
+    for filename in os.listdir(path):
+        with open(path + '/' + filename) as f:
+            data = json.load(f)
+            tweets += data
+    return tweets
 
 def get_input_fields(tweets):
     '''Get all of the fields in the data (rows in the csv header). Note that for the csv 
@@ -83,18 +88,18 @@ def clean_text(text, remove_stopwords=True):
     clean_list = [w for w in word_list if (w not in stops and w not in blacklist)]
     return " ".join( clean_list ) if len(clean_list) > 0 else " "
 
-def clean_corpus(filename, clean_data_name):
+def clean_corpus(path, clean_data_name):
     ''' Function to clean a given tweet corpus
-    filename - The complete fielpath of the json file to read from 
+    filename - Folder where all the tweets are kept
     clean_data_name - Name of the clean data to be saved
     '''
-    tweets = get_raw_data(filename)
+    tweets = get_raw_data(path)
     all_fields, csv_fields = get_input_fields(tweets)
     print (csv_fields)
     # Save the tweets in a csv format
-    json_2_csv(tweets, "./tmp/raw_tweets.csv", csv_fields)
+    json_2_csv(tweets, main_path + "tmp/raw_tweets.csv", csv_fields)
     # Now lets read the contents of the file with pandas
-    df = pd.read_csv("./tmp/raw_tweets.csv", header=0)
+    df = pd.read_csv(main_path + "tmp/raw_tweets.csv", header=0)
     # We now add a clean_text column to our df frame
     df['clean_text'] = df.apply(lambda x: clean_text(x['text']), axis=1)
     # We also add a clean_text_with_stopwords as keeping stopwords could be
@@ -105,5 +110,5 @@ def clean_corpus(filename, clean_data_name):
     # Let's also get rid of the id_str field, as it is pretty useless
     df.drop('id_str', axis=1, inplace=True)
     # Saving the data
-    df.to_json('./data/clean_data/{}.json'.format(clean_data_name), orient="records")
-    df.to_csv('./data/clean_data/{}.csv'.format(clean_data_name), index=False)
+    df.to_json(main_path + 'data/clean_data/{}.json'.format(clean_data_name), orient="records")
+    df.to_csv(main_path + './data/clean_data/{}.csv'.format(clean_data_name), index=False)
