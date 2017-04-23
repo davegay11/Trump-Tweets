@@ -10,26 +10,6 @@
 
 This is the official repository for The Trump's Tweets team in Professor Herron's Humanities: Data Mining + Meaning class at Duke University.
 
-## Data Aquisition and Cleaning
-
-To get the data, run the following script from the root project directory:
-
-`./scripts/get_data.sh`
-
-To clean the data and generate the models, run:
-
-`./pipeline/main.py`
-
-By default it cleans the data, generates word2vec models, and creates wordclouds for each individual. The file is formatted as a command line utility, whose options can be found with:
-
-`/pipeline/main.py --help`
-
-`fields.txt` contains an ascii table describing each field in the cleaned data and what values it can take on.
-
-## Representations / Analysis
-
-Because we had our data cleaned a bit early, we started using it to perform some basic analysis of his tweets. The files `bag_of_words.ipynb`, `n_gram.ipynb`, and `word2vec.ipynb` all create different NLP representations of his tweets, and start to try to make sense of them. As the project progresses we will clean up / add more to these files.
-
 ## Required packages
 
 To install the required pip modules we recommend using virtualenv
@@ -51,6 +31,27 @@ NOTE: Because matplotlib is a bit wierd, you need to make the file `~/.matplotli
 `echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc`
 
 Specifically from NLTK you need the vader lexicon and stopwords corpus. These can be installed through python using the command `nltk.download()` and following the GUI.
+
+
+## Data Aquisition and Cleaning
+
+To get the data, run the following script from the root project directory:
+
+`./scripts/get_data.sh`
+
+To clean the data and generate the models, run:
+
+`./pipeline/main.py`
+
+By default it cleans the data, generates word2vec models, and creates wordclouds for each individual. The file is formatted as a command line utility, whose options can be found with:
+
+`/pipeline/main.py --help`
+
+`fields.txt` contains an ascii table describing each field in the cleaned data and what values it can take on.
+
+## Representations / Analysis
+
+Because we had our data cleaned a bit early, we started using it to perform some basic analysis of his tweets. The files `bag_of_words.ipynb`, `n_gram.ipynb`, and `word2vec.ipynb` all create different NLP representations of his tweets, and start to try to make sense of them. As the project progresses we will clean up / add more to these files.
 
 ## Licence
 
