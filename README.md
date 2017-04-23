@@ -12,7 +12,7 @@ This is the official repository for The Trump's Tweets team in Professor Herron'
 
 ## Required packages
 
-To install the required pip modules we recommend using virtualenv
+To install the required pip modules we recommend using virtualenv (can be installed with `pip install virtualenv`)
 
 Initilaize your virtual environment with:
 
@@ -32,12 +32,11 @@ NOTE: Because matplotlib is a bit wierd, you need to make the file `~/.matplotli
 
 Specifically from NLTK you need the vader lexicon and stopwords corpus. These can be installed through python using the command `nltk.download()` and following the GUI.
 
-
 ## Data Aquisition and Cleaning
 
 To get the data, run the following script from the root project directory:
 
-`./scripts/get_data.sh`
+`./scripts/get_tweets.sh`
 
 To clean the data and generate the models, run:
 

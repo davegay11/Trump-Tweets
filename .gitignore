@@ -3,3 +3,4 @@ tmp
 data/raw_json/**/*
 data/clean_data/**/*
 models/word2vec/*
+img/**/*

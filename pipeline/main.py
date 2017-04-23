@@ -2,7 +2,7 @@
 
 '''
 Pipeline to clean the data and generate models from the data. Run the file with:
-    > ./main.py [flags]
+    `./main.py [flags]`
 '''
 
 import numpy as np
@@ -14,6 +14,7 @@ import argparse
 from data_cleaning import clean_corpus
 from model_word2vec import create_model
 from vis_wordcloud import generate_wordcloud
+from tfidf import similarity_to_trump
 
 # Parse options passed in from the command line
 parser = argparse.ArgumentParser(
@@ -23,9 +24,9 @@ parser = argparse.ArgumentParser(
 
 # Basically alias the function to something shorter
 add_arg = parser.add_argument
-parser.add_argument('--clean', dest='clean', action='store_true', 
+parser.add_argument('--clean', dest='clean', action='store_true',
         help="Clean the tweets in the script")
-parser.add_argument('--no-clean', dest='clean', action='store_false', 
+parser.add_argument('--no-clean', dest='clean', action='store_false',
         help="Skip the cleaning stage")
 parser.set_defaults(clean=True)
 # parse the args
@@ -76,6 +77,10 @@ def main():
     for i, handle in enumerate(handles):
         #  if handle in ['agscottpruitt']: continue
         process_individual(handle, i)
+
+    # TF-IDF and cosine similarity. Needs to be outside process_individual
+    # because the embedding needs to look at everyone at once
+    similarity_to_trump()
     print "Finished!"
 
 if __name__ == "__main__":
