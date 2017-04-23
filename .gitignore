@@ -1,2 +1,3 @@
-data/raw_json
-data/clean_data
+data/raw_json/**/*
+data/clean_data/**/*
+models/word2vec/**/*
