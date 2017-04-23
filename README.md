@@ -28,7 +28,7 @@ Next (in the repository root), install the packages necessary for this project w
 
 NOTE: Because matplotlib is a bit wierd, you need to make the file `~/.matplotlib/matplotlibrc` and in it put "backend: TkAgg". This can be done with:
 
-`echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc`
+`mkdir -p ~/.matplotlib; echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc`
 
 Specifically from NLTK you need the vader lexicon and stopwords corpus. These can be installed through python using the command `nltk.download()` and following the GUI.
 
