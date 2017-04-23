@@ -29,7 +29,10 @@ Because we had our data cleaned a bit early, we started using it to perform some
 > Install with pip install [package_here]
 
 - wordcloud
+- nltk
 - gensim
+
+Specifically from NLTK you need the vader lexicon and stopwords corpus
 
 ## Licence
 

@@ -5,8 +5,9 @@ import csv
 import os
 import re
 import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-main_path = os.path.join(os.path.dirname(__file__), './../')
+main_path = os.path.join(os.path.dirname(__file__), '../')
 
 def get_raw_data(path):
     '''Get the raw json data downloaded from the tweepy API'''
@@ -49,7 +50,7 @@ def json_2_csv(json, filename, fields):
             try:
                 vals = [unicode(entry[key]).encode('utf-8') for key in fields]
                 writer.writerow(vals)
-            except UnicodeEncodeError:
+            except (KeyError, UnicodeEncodeError) as e:
                 fail_count += 1
     print "Could not parse the contents of %d entries" % fail_count
 
@@ -95,7 +96,6 @@ def clean_corpus(path, clean_data_name):
     '''
     tweets = get_raw_data(path)
     all_fields, csv_fields = get_input_fields(tweets)
-    print (csv_fields)
     # Save the tweets in a csv format
     json_2_csv(tweets, main_path + "tmp/raw_tweets.csv", csv_fields)
     # Now lets read the contents of the file with pandas
@@ -109,6 +109,10 @@ def clean_corpus(path, clean_data_name):
     df['source'] = df["source"].apply(lambda x: get_source(x))
     # Let's also get rid of the id_str field, as it is pretty useless
     df.drop('id_str', axis=1, inplace=True)
+    # Create a new column for the polarities
+    sid = SentimentIntensityAnalyzer()
+    df['compound_polarity'] = df['clean_text'].apply(lambda x: sid.polarity_scores(str(x))['compound']) 
     # Saving the data
     df.to_json(main_path + 'data/clean_data/{}.json'.format(clean_data_name), orient="records")
-    df.to_csv(main_path + './data/clean_data/{}.csv'.format(clean_data_name), index=False)
+    df.to_csv(main_path + './data/clean_data/{}.csv'.format(clean_data_name), index=False, \
+            line_terminator="\r")

@@ -28,7 +28,7 @@ def create_model(
 
     print "Training model..."
     model = word2vec.Word2Vec(
-            [s.split() for s in list(df['clean_text'])], 
+            [str(s).split() for s in list(df['clean_text'])], 
             workers=num_workers, size=num_features, \
             min_count = min_word_count, \
             window = context, sample = downsampling)
