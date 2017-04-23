@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
 # Bash script to pull all the tweets down that were stored in the trump
-# twitter archive. 
+# twitter archive. Make sure to run this file from the ROOT of the project
+# like: 
+# > ./scripts/get_data.sh
 
 # Get all of the accounts in the trump twitter archive
+echo "Getting the accounts"
 usernames_str=$(curl "http://www.trumptwitterarchive.com/data/accounts.json" | jq ".[] | {account: .account}" | sed 's/"account": //' | sed 's/"//g' | sed 's/[{}]//g' | sed 's/ //g' | sed '/^$/d' | tr "\n" ", ")
 # Parse the usernames into a bash list to iterate over
 usernames=(${usernames_str//,/ })
@@ -21,7 +24,7 @@ for username in "${usernames[@]}"; do
     echo "=============================$year============================="
     url="http://www.trumptwitterarchive.com/data/$username/$year.json"
     # echo $url
-    # curl -s $url > "../data/raw_json/$username/tweets_$year.json"
+    curl -s $url > "./data/raw_json/$username/tweets_$year.json"
   done
 done
 

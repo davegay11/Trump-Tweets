@@ -42,17 +42,19 @@ def process_individual(handle):
     if handle == "realdonaldtrump": return #erroring for some reason
     if args.clean:
         clean_corpus(data_path + 'raw_json/' + handle, handle)
-    model = create_model(data_path + 'clean_data/' + handle + '.csv', \
-            model_path + 'word2vec/' + handle + '.bin', 
-            min_word_count=10,
-            logging=False)
-    # Let's look at how the model performs
-    for keyword in ['jobs', 'president', 'america', 'trump', 'hillary']:
-        print "====> Keyword: {}".format(keyword)
-        try:
-            pprint(model.most_similar(keyword))
-        except KeyError:
-            print keyword + " not in vocabulary"
+    #  model = create_model(data_path + 'clean_data/' + handle + '.csv', \
+            #  model_path + 'word2vec/' + handle + '.bin', 
+            #  min_word_count=10,
+            #  logging=False)
+    #  # Let's look at how the model performs
+    #  for keyword in ['jobs', 'president', 'america', 'trump', 'hillary']:
+        #  print "====> Keyword: {}".format(keyword)
+        #  try:
+            #  pprint(model.most_similar(keyword))
+        #  except KeyError:
+            #  print keyword + " not in vocabulary"
+    # Let's also generate a wordcloud for each person
+    generate_wordcloud(main_path + 'data/clean_data/' + handle + '.csv', handle)
 
 def main():
     handles = [ name for name in os.listdir(data_path + 'raw_json') ]
