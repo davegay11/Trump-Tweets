@@ -26,13 +26,25 @@ Because we had our data cleaned a bit early, we started using it to perform some
 
 ## Required packages
 
-> Install with pip install [package_here]
+To install the required pip modules we recommend using virtualenv
 
-- wordcloud
-- nltk
-- gensim
+Initilaize your virtual environment with:
 
-Specifically from NLTK you need the vader lexicon and stopwords corpus
+`virtualenv ~/.trump`
+
+Source the environment with:
+
+`source ~/.trump/bin/activate`
+
+Next (in the repository root), install the packages necessary for this project with:
+
+`pip install -r requirements.txt`
+
+NOTE: Because matplotlib is a bit wierd, you need to make the file `~/.matplotlib/matplotlibrc` and in it put "backend: TkAgg". This can be done with:
+
+`echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc`
+
+Specifically from NLTK you need the vader lexicon and stopwords corpus. These can be installed through python using the command `nltk.download()` and following the GUI.
 
 ## Licence
 

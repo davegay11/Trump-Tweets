@@ -32,7 +32,6 @@ def create_model(
             workers=num_workers, size=num_features, \
             min_count = min_word_count, \
             window = context, sample = downsampling)
-
     # calling init_sims make the training more efficient if we don't plan on
     # training the model any further
     model.init_sims(replace=True)

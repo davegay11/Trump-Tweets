@@ -6,6 +6,7 @@ import os
 import re
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk.stem.porter import *
 
 main_path = os.path.join(os.path.dirname(__file__), '../')
 
@@ -81,11 +82,18 @@ def clean_text(text, remove_stopwords=True):
     link_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     no_links = re.sub(link_regex, " ", text)
     word_list = re.sub("[^@a-zA-Z]", " ", no_links).lower().split()
+    # Stemming the words using the Porter stemmer
+    #  stemmer = PorterStemmer()
+    # Actually a bug in NLTK that makes us need to account for this
+    #  try:
+        #  word_list = [(stemmer.stem(word) if len(word) > 3 else word) for word in word_list]
+    #  except IndexError:
+        #  print("Could not process tweet due to indexing error")
     # Searching a set is faster in python
     stops = set(stopwords.words("english")) if remove_stopwords else set()
     # blacklist of words that we should ignore...for example amp is really just &,
     # so it appears a ton but has no semantic value
-    blacklist = set(['amp'])
+    blacklist = set(['amp', 'rt'])
     clean_list = [w for w in word_list if (w not in stops and w not in blacklist)]
     return " ".join( clean_list ) if len(clean_list) > 0 else " "
 
@@ -109,6 +117,8 @@ def clean_corpus(path, clean_data_name):
     df['source'] = df["source"].apply(lambda x: get_source(x))
     # Let's also get rid of the id_str field, as it is pretty useless
     df.drop('id_str', axis=1, inplace=True)
+    # Drop rows that are retweets...NOT the words of the person
+    df = df.query('is_retweet != "True"')
     # Create a new column for the polarities
     sid = SentimentIntensityAnalyzer()
     df['compound_polarity'] = df['clean_text'].apply(lambda x: sid.polarity_scores(str(x))['compound']) 
@@ -116,3 +126,5 @@ def clean_corpus(path, clean_data_name):
     df.to_json(main_path + 'data/clean_data/{}.json'.format(clean_data_name), orient="records")
     df.to_csv(main_path + './data/clean_data/{}.csv'.format(clean_data_name), index=False, \
             line_terminator="\r")
+    print "Corpus size: {}".format(len(df))
+    return len(df)

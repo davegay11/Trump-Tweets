@@ -46,9 +46,9 @@ def play_with_model(model):
         except KeyError:
             print keyword + " not in vocabulary"
 
-def process_individual(handle):
+def process_individual(handle, i):
     """Do all processing for an individual given a string of their twitter handle."""
-    print "------ PROCESSING @{} -----".format(handle)
+    print "------ PROCESSING @{} ----- ({})".format(handle, i)
     if args.clean:
         clean_corpus(data_path + 'raw_json/' + handle, handle)
     bin_dir = model_path + 'word2vec/'
@@ -57,20 +57,26 @@ def process_individual(handle):
     if not os.path.exists(bin_dir):
         os.makedirs(bin_dir)
     # Create (and also save) a word2vec model of all of the tweets
-    model = create_model(data_path + 'clean_data/' + handle + '.csv', \
-            model_path + 'word2vec/' + handle + '.bin',
-            min_word_count=10,
-            logging=False)
+    model = create_model(
+                data_path + 'clean_data/' + handle + '.csv',
+                model_path + 'word2vec/' + handle + '.bin',
+                min_word_count=5,
+                logging=False
+            )
     # Let's also generate a wordcloud for each person
     clean_path = main_path + 'data/clean_data/' + handle + '.csv'
-    #  generate_wordcloud(clean_path, handle)
+    print "Generating wordcloud"
+    generate_wordcloud(clean_path, handle)
+    # TODO: Generate TF-IDF scores for each user...need to process the
+    # Cosine similarity between trump and everyone else (separately?)
 
 def main():
     handles = [ name for name in os.listdir(data_path + 'raw_json') ]
     # First we clean the tweets for each of the individuals
-    for handle in handles:
+    for i, handle in enumerate(handles):
         #  if handle in ['agscottpruitt']: continue
-        process_individual(handle)
+        process_individual(handle, i)
+    print "Finished!"
 
 if __name__ == "__main__":
     main()

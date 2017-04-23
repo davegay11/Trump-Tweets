@@ -7,7 +7,7 @@
 
 # Get all of the accounts in the trump twitter archive
 echo "Getting the accounts"
-usernames_str=$(curl "http://www.trumptwitterarchive.com/data/accounts.json" | jq ".[] | {account: .account}" | sed 's/"account": //' | sed 's/"//g' | sed 's/[{}]//g' | sed 's/ //g' | sed '/^$/d' | tr "\n" ", ")
+usernames_str=$(curl -s "http://www.trumptwitterarchive.com/data/accounts.json" | grep '"account"' | sed 's/"account": //g' | sed 's/    "//g' | sed 's/"//g' | tr "\n" " ")
 # Parse the usernames into a bash list to iterate over
 usernames=(${usernames_str//,/ })
 
