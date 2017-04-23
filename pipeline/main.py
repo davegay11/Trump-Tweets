@@ -13,6 +13,7 @@ import os
 import argparse
 from data_cleaning import clean_corpus
 from model_word2vec import create_model
+from vis_wordcloud import generate_wordcloud
 
 # Parse options passed in from the command line
 parser = argparse.ArgumentParser(
