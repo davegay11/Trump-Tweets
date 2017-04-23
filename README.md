@@ -10,6 +10,28 @@
 
 This is the official repository for The Trump's Tweets team in Professor Herron's Humanities: Data Mining + Meaning class at Duke University.
 
+## Required packages
+
+To install the required pip modules we recommend using virtualenv (can be installed with `pip install virtualenv`)
+
+Initilaize your virtual environment with:
+
+`virtualenv ~/.trump`
+
+Source the environment with:
+
+`source ~/.trump/bin/activate`
+
+Next (in the repository root), install the packages necessary for this project with:
+
+`pip install -r requirements.txt`
+
+NOTE: Because matplotlib is a bit wierd, you need to make the file `~/.matplotlib/matplotlibrc` and in it put "backend: TkAgg". This can be done with:
+
+`mkdir -p ~/.matplotlib; echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc`
+
+Specifically from NLTK you need the vader lexicon and stopwords corpus. These can be installed through python using the command `nltk.download()` and following the GUI.
+
 ## Data Aquisition and Cleaning
 
 To get the data, run the following script from the root project directory:
@@ -29,28 +51,6 @@ By default it cleans the data, generates word2vec models, and creates wordclouds
 ## Representations / Analysis
 
 Because we had our data cleaned a bit early, we started using it to perform some basic analysis of his tweets. The files `bag_of_words.ipynb`, `n_gram.ipynb`, and `word2vec.ipynb` all create different NLP representations of his tweets, and start to try to make sense of them. As the project progresses we will clean up / add more to these files.
-
-## Required packages
-
-To install the required pip modules we recommend using virtualenv
-
-Initilaize your virtual environment with:
-
-`virtualenv ~/.trump`
-
-Source the environment with:
-
-`source ~/.trump/bin/activate`
-
-Next (in the repository root), install the packages necessary for this project with:
-
-`pip install -r requirements.txt`
-
-NOTE: Because matplotlib is a bit wierd, you need to make the file `~/.matplotlib/matplotlibrc` and in it put "backend: TkAgg". This can be done with:
-
-`echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc`
-
-Specifically from NLTK you need the vader lexicon and stopwords corpus. These can be installed through python using the command `nltk.download()` and following the GUI.
 
 ## Licence
 

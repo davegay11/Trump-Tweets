@@ -81,7 +81,7 @@ def clean_text(text, remove_stopwords=True):
     # source: http://stackoverflow.com/questions/6883049/regex-to-find-urls-in-string-in-python
     link_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     no_links = re.sub(link_regex, " ", text)
-    word_list = re.sub("[^@a-zA-Z]", " ", no_links).lower().split()
+    word_list = re.sub("[^#@a-zA-Z]", " ", no_links).lower().split()
     # Stemming the words using the Porter stemmer
     #  stemmer = PorterStemmer()
     # Actually a bug in NLTK that makes us need to account for this
