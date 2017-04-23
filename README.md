@@ -14,7 +14,7 @@ This is the official repository for The Trump's Tweets team in Professor Herron'
 
 To get the data, run the following script from the root project directory:
 
-`./scripts/get_data.sh`
+`./scripts/get_tweets.sh`
 
 To clean the data and generate the models, run:
 
