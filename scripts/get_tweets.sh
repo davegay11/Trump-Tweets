@@ -14,6 +14,9 @@ usernames=(${usernames_str//,/ })
 # All the years that were available
 years=(2009 2010 2011 2012 2013 2014 2015 2016 2017)
 
+# make sure the raw_json folder is created
+mkdir -p "./data/raw_json"
+
 # For each username we collect all of the tweets and save them to a file
 for username in "${usernames[@]}"; do
   echo ""
