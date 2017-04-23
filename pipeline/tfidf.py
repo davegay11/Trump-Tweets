@@ -51,5 +51,5 @@ def similarity_to_trump():
         for person, cosine in zip(people, cosine_similarities):
             f.write(person + ', ' + str(cosine) + ',\n')
 
-
-similarity_to_trump()
+if __name__ == "__main__":
+    similarity_to_trump()
