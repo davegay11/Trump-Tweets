@@ -10,13 +10,19 @@
 
 This is the official repository for The Trump's Tweets team in Professor Herron's Humanities: Data Mining + Meaning class at Duke University.
 
-## Raw data
+## Data Aquisition and Cleaning
 
-The raw data can be found in `./data/trump_tweet_data_archive/`, and was pulled from [The Trump Twitter Archive](http://www.trumptwitterarchive.com/)
+To get the data, run the following script from the root project directory:
 
-## Cleaning
+`./scripts/get_data.sh`
 
-`data_cleaning.ipynb` contains the code relating to the cleaning of the tweets saved in the json files in `./data/trump_tweet_data_archive/master_YEAR.json`. It outputs a json and csv file in the `clean_data` directory, representing the final, cleaned data.
+To clean the data and generate the models, run:
+
+`./pipeline/main.py`
+
+By default it cleans the data, generates word2vec models, and creates wordclouds for each individual. The file is formatted as a command line utility, whose options can be found with:
+
+`/pipeline/main.py --help`
 
 `fields.txt` contains an ascii table describing each field in the cleaned data and what values it can take on.
 
