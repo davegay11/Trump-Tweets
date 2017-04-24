@@ -58,18 +58,12 @@ def json_2_csv(json, filename, fields):
 # Now that we know all of the sources, let's map them to a shorter string
 def get_source(source):
     '''Return what medium the tweet was sent from'''
-    if source is None:
-        return ""
-    # The source will now be one of the following text fields
-    source_list = ['instagram', 'web', 'ipad', 'android', 'iphone', 'ads',
-                    'periscope', 'media', 'qanda', 'twitlonger', 'vine', 
-                    'blackberry', 'facebook', 'tweetdeck', 'websites']
-    if not isinstance(source, str):
-        return 'other'
-    if not any(word in source for word in source_list):
-        return 'other'
-    stripped = re.match('<a .*>(.*?)</a>', source).group(1).lower().split()
-    return "".join([w for w in stripped if w in source_list])
+    if source is None or not isinstance(source, str):
+        return "other"
+    source = source.lower()
+    if "iphone" in source: return "iphone"
+    elif "android" in source: return "android"
+    return source
 
 # Let's put it all together in a function
 def clean_text(text, remove_stopwords=True):
@@ -97,10 +91,11 @@ def clean_text(text, remove_stopwords=True):
     clean_list = [w for w in word_list if (w not in stops and w not in blacklist)]
     return " ".join( clean_list ) if len(clean_list) > 0 else " "
 
-def clean_corpus(path, clean_data_name):
+def clean_corpus(path, clean_data_name, is_trump=False):
     ''' Function to clean a given tweet corpus
     filename - Folder where all the tweets are kept
     clean_data_name - Name of the clean data to be saved
+    is_trump - we get the trump data from the archive (more fields)
     '''
     tweets = get_raw_data(path)
     all_fields, csv_fields = get_input_fields(tweets)
@@ -119,6 +114,10 @@ def clean_corpus(path, clean_data_name):
     df.drop('id_str', axis=1, inplace=True)
     # Drop rows that are retweets...NOT the words of the person
     df = df.query('is_retweet != "True"')
+    # If trump we only keep tweets made from android
+    if is_trump:
+        print("Processing Trump's tweets, only keeping those made on android")
+        df = df.query('source != "iphone"')
     # Create a new column for the polarities
     sid = SentimentIntensityAnalyzer()
     df['compound_polarity'] = df['clean_text'].apply(lambda x: sid.polarity_scores(str(x))['compound']) 

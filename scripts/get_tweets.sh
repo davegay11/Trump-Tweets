@@ -23,6 +23,9 @@ mkdir -p "./data/clean_data"
 # make sure the tf_idf folder is created
 mkdir -p "./data/tf_idf"
 
+# make sure the img folder exists
+mkdir -p "./img"
+
 # For each username we collect all of the tweets and save them to a file
 for username in "${usernames[@]}"; do
   echo ""
