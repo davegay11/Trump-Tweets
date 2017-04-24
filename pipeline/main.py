@@ -24,11 +24,21 @@ parser = argparse.ArgumentParser(
 
 # Basically alias the function to something shorter
 add_arg = parser.add_argument
+parser.add_argument('--cloud', dest='cloud', action='store_true',
+        help="Make a wordcloud")
+parser.add_argument('--no-cloud', dest='cloud', action='store_false',
+        help="Skip the wordcloud")
+parser.add_argument('--vec', dest='vec', action='store_true',
+        help="Make a word2vec model of tweets")
+parser.add_argument('--no-vec', dest='vec', action='store_false',
+        help="Skip the vector embeddings")
 parser.add_argument('--clean', dest='clean', action='store_true',
         help="Clean the tweets in the script")
 parser.add_argument('--no-clean', dest='clean', action='store_false',
         help="Skip the cleaning stage")
 parser.set_defaults(clean=True)
+parser.set_defaults(vec=True)
+parser.set_defaults(cloud=True)
 # parse the args
 args = parser.parse_args()
 
@@ -51,25 +61,28 @@ def process_individual(handle, i):
     """Do all processing for an individual given a string of their twitter handle."""
     print "------ PROCESSING @{} ----- ({})".format(handle, i)
     if args.clean:
-        clean_corpus(data_path + 'raw_json/' + handle, handle)
+        is_trump = handle == 'realdonaldtrump'
+        size = clean_corpus(data_path + 'raw_json/' + handle, handle, is_trump=is_trump)
+        # We don't process the tweets if there are less tha 1000 of them
+        if size < 1000: return
     bin_dir = model_path + 'word2vec/'
     if not os.path.exists(data_path + 'clean_data/'):
         os.makedirs(data_path + 'clean_data/')
     if not os.path.exists(bin_dir):
         os.makedirs(bin_dir)
     # Create (and also save) a word2vec model of all of the tweets
-    model = create_model(
-                data_path + 'clean_data/' + handle + '.csv',
-                model_path + 'word2vec/' + handle + '.bin',
-                min_word_count=5,
-                logging=False
-            )
+    if args.vec:
+        model = create_model(
+            data_path + 'clean_data/' + handle + '.csv',
+            model_path + 'word2vec/' + handle + '.bin',
+            min_word_count=5,
+            logging=False
+        )
     # Let's also generate a wordcloud for each person
-    clean_path = main_path + 'data/clean_data/' + handle + '.csv'
-    print "Generating wordcloud"
-    generate_wordcloud(clean_path, handle)
-    # TODO: Generate TF-IDF scores for each user...need to process the
-    # Cosine similarity between trump and everyone else (separately?)
+    if args.cloud:
+        clean_path = main_path + 'data/clean_data/' + handle + '.csv'
+        print "Generating wordcloud"
+        generate_wordcloud(clean_path, handle)
 
 def main():
     handles = [ name for name in os.listdir(data_path + 'raw_json') ]
@@ -77,7 +90,6 @@ def main():
     for i, handle in enumerate(handles):
         #  if handle in ['agscottpruitt']: continue
         process_individual(handle, i)
-
     # TF-IDF and cosine similarity. Needs to be outside process_individual
     # because the embedding needs to look at everyone at once
     similarity_to_trump()
