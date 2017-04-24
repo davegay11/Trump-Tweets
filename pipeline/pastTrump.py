@@ -7,6 +7,7 @@ import sys
 from model_word2vec import create_model
 from vis_wordcloud import generate_wordcloud
 from tfidf import similarity_to_trump
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 #main_path = os.path.join(os.path.dirname(__file__), '../')
 main_path = os.path.join(os.path.dirname('pastTrump.py'), '../')
@@ -23,7 +24,8 @@ def compareSelf(segments=0, dates=[announcementDate]):
     filename = main_path + filepath
     df = pd.read_csv(filename, header=0)
     #converts/sorts data into a useable format
-    data = zip([__convertDate(date) for date in df['created_at']], df['clean_text'])
+    data = zip([__convertDate(date) for date in df['created_at']], df['clean_text'], df['clean_text'])
+    
     data.sort()
     dateTime = [d[0] for d in data]
     #Creates the segment indexes for the data
@@ -38,15 +40,12 @@ def compareSelf(segments=0, dates=[announcementDate]):
     #loads in the time segment dates
     if segments > 0:
         span = (maxDate - minDate).days
-        print span
         segmentWidth = span/segments
-        print segmentWidth
         for i in range(1, segments):
             timeEndSlice = minDate + datetime.timedelta(i * segmentWidth)
-            print timeEndSlice
             separators.append(__findSplitIndex(dateTime, timeEndSlice))
     separators.sort()
-    print separators
+    #print separators
     #Use separator indices to segment data
     segmentedData = []
     for index in range(len(separators)-1):
@@ -55,15 +54,18 @@ def compareSelf(segments=0, dates=[announcementDate]):
         segment = (startDate, endDate, data[startDate:endDate])
         segmentedData.append(segment)
     #Write segmented Data to different files
-#     for x in segmentedData:
-#         print x[:20]
-    #print segmentedData[:5] #[( , , [(), ()]),]
     for i in range(len(segmentedData)):
-        with open(main_path + outputPath + str(i) + "_timeSlice", 'w') as f:
-            f.write("date,clean_text,\n")
+        dataPath = main_path + outputPath + str(i) + "_timeSlice"
+        with open(dataPath, 'w') as f:
+            f.write("date,clean_text,text,\n")
             for line in segmentedData[i][2]:
-                f.write(str(line[0]) + "," + str(line[1]) + ',\n')
+                f.write(str(line[0]) + "," + str(line[1]) + ',' + line[2] + ',\n')
             f.close()
+            #Run sentiment analysis on each timeSlice
+            sid = SentimentIntensityAnalyzer()
+            df = pd.read_csv(dataPath)
+            df['compound_polarity'] = df['clean_text'].apply(lambda x: sid.polarity_scores(str(x))['compound'])
+            df.to_csv(dataPath, index=False,line_terminator="\n")
     return segmentedData
 
 #Converts the date from text to a datetime object
@@ -92,13 +94,15 @@ def __findSplitIndex(data, date):
     return findIndex
 
 if __name__ == "__main__":
-    compareSelf()
-    #compareSelf(10, [])
-    for i in range(2):
+    #compareSelf()
+    compareSelf(10, [])
+    for i in range(10):
         dataPath = main_path + outputPath + str(i) + '_timeSlice'
+        #Creates word clouds of each timeSlice
         generate_wordcloud(dataPath, str(i) + '_sliceWordCloud')
+        #Creates word2vec models of each timeSlice
         create_model(dataPath, main_path + 'models/word2vec/' + str(i) + '_sliceWord2Vec.bin', min_word_count=5, logging=False)
         #TF-IDF analysis will be run through main
-        #
+        
         
     
