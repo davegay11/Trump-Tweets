@@ -24,7 +24,7 @@ def compareSelf(segments=0, dates=[announcementDate]):
     filename = main_path + filepath
     df = pd.read_csv(filename, header=0)
     #converts/sorts data into a useable format
-    data = zip([__convertDate(date) for date in df['created_at']], df['clean_text'], df['clean_text'])
+    data = zip([__convertDate(date) for date in df['created_at']], df['clean_text'])
     
     data.sort()
     dateTime = [d[0] for d in data]
@@ -57,9 +57,9 @@ def compareSelf(segments=0, dates=[announcementDate]):
     for i in range(len(segmentedData)):
         dataPath = main_path + outputPath + str(i) + "_timeSlice.csv"
         with open(dataPath, 'w') as f:
-            f.write("date,clean_text,text,\n")
+            f.write("date,clean_text,\n")
             for line in segmentedData[i][2]:
-                f.write(str(line[0]) + "," + str(line[1]) + ',' + line[2] + ',\n')
+                f.write(str(line[0]) + "," + str(line[1]) + ',\n')
             f.close()
             #Run sentiment analysis on each timeSlice
             sid = SentimentIntensityAnalyzer()
