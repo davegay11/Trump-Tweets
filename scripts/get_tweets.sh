@@ -50,5 +50,13 @@ then
   mv ./data/baseline_tweets.json ./data/raw_json/baseline_tweets/
 fi
 
+berniefolder="./data/raw_json/berniesanders"
+berniefile="./data/raw_json/berniesanders/berniesanders.json"
+mkdir -p $berniefolder
+if [ ! -f $berniefile ]; then
+  echo "Moving bernie sanders to raw_json"
+  cp "./andrews_stuff/berniesanders.json" $berniefile 
+fi
+
 echo ""
 echo "All done!!!"
