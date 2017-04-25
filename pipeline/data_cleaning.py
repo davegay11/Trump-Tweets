@@ -100,6 +100,8 @@ def clean_corpus(path, clean_data_name, is_trump=False):
     tweets = get_raw_data(path)
     all_fields, csv_fields = get_input_fields(tweets)
     # Save the tweets in a csv format
+    if not os.path.exists(main_path + 'tmp'):
+        os.makedirs(main_path + 'tmp')
     json_2_csv(tweets, main_path + "tmp/raw_tweets.csv", csv_fields)
     # Now lets read the contents of the file with pandas
     df = pd.read_csv(main_path + "tmp/raw_tweets.csv", header=0)
@@ -113,7 +115,8 @@ def clean_corpus(path, clean_data_name, is_trump=False):
     # Let's also get rid of the id_str field, as it is pretty useless
     df.drop('id_str', axis=1, inplace=True)
     # Drop rows that are retweets...NOT the words of the person
-    df = df.query('is_retweet != "True"')
+    if "is_retweet" in csv_fields:
+        df = df.query('is_retweet != "True"')
     # If trump we only keep tweets made from android
     if is_trump:
         print("Processing Trump's tweets, only keeping those made on android")
