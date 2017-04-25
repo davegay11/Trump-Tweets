@@ -11,8 +11,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 #main_path = os.path.join(os.path.dirname(__file__), '../')
 main_path = os.path.join(os.path.dirname('pastTrump.py'), '../')
-filepath = '../clean_tweets.csv'
-outputPath = '../segmented_tweets/'
+filepath = 'data/clean_tweets.csv'
+outputPath = 'data/segmented_tweets/'
 announcementDate = datetime.datetime(2015,6,15)
 electionDate = datetime.datetime(2016,11,8)
 
@@ -55,7 +55,7 @@ def compareSelf(segments=0, dates=[announcementDate]):
         segmentedData.append(segment)
     #Write segmented Data to different files
     for i in range(len(segmentedData)):
-        dataPath = main_path + outputPath + str(i) + "_timeSlice"
+        dataPath = main_path + outputPath + str(i) + "_timeSlice.csv"
         with open(dataPath, 'w') as f:
             f.write("date,clean_text,text,\n")
             for line in segmentedData[i][2]:
@@ -94,12 +94,12 @@ def __findSplitIndex(data, date):
     return findIndex
 
 if __name__ == "__main__":
-    #compareSelf()
-    compareSelf(10, [])
-    for i in range(10):
-        dataPath = main_path + outputPath + str(i) + '_timeSlice'
+    compareSelf()
+    #compareSelf(10, [])
+    for i in range(2):
+        dataPath = main_path + outputPath + str(i) + '_timeSlice.csv'
         #Creates word clouds of each timeSlice
-        generate_wordcloud(dataPath, str(i) + '_sliceWordCloud')
+        generate_wordcloud(dataPath, str(i) + '_sliceWordCloud.png')
         #Creates word2vec models of each timeSlice
         create_model(dataPath, main_path + 'models/word2vec/' + str(i) + '_sliceWord2Vec.bin', min_word_count=5, logging=False)
         #TF-IDF analysis will be run through main
