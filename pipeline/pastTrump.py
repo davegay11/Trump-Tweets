@@ -99,7 +99,7 @@ if __name__ == "__main__":
     for i in range(2):
         dataPath = main_path + outputPath + str(i) + '_timeSlice.csv'
         #Creates word clouds of each timeSlice
-        generate_wordcloud(dataPath, str(i) + '_sliceWordCloud.png')
+        generate_wordcloud(dataPath, str(i) + '_sliceWordCloud')
         #Creates word2vec models of each timeSlice
         create_model(dataPath, main_path + 'models/word2vec/' + str(i) + '_sliceWord2Vec.bin', min_word_count=5, logging=False)
         #TF-IDF analysis will be run through main
