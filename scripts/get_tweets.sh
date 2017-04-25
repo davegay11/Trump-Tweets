@@ -40,5 +40,15 @@ for username in "${usernames[@]}"; do
   done
 done
 
+# Move the baseline tweets to the same place as the others, in the same format
+# to make the cleaning process easier
+baseline_tweets="./data/baseline_tweets.json"
+if test -f $baseline_tweets
+then
+  echo "Moving baseline tweets"
+  mkdir -p ./data/raw_json/baseline_tweets
+  mv ./data/baseline_tweets.json ./data/raw_json/baseline_tweets/
+fi
+
 echo ""
 echo "All done!!!"
