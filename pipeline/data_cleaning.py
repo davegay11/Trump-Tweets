@@ -113,7 +113,8 @@ def clean_corpus(path, clean_data_name, is_trump=False):
     # Let's also get rid of the id_str field, as it is pretty useless
     df.drop('id_str', axis=1, inplace=True)
     # Drop rows that are retweets...NOT the words of the person
-    df = df.query('is_retweet != "True"')
+    if "is_retweet" in csv_fields:
+        df = df.query('is_retweet != "True"')
     # If trump we only keep tweets made from android
     if is_trump:
         print("Processing Trump's tweets, only keeping those made on android")
