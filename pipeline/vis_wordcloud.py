@@ -17,6 +17,5 @@ def generate_wordcloud(filename, name):
         os.makedirs(wordcloud_path)
     df = pd.read_csv(filename, header=0)
     text = df['clean_text'].str.cat(sep=' ')
-    stopwords = set([name])
-    wordcloud = WordCloud(stopwords=stopwords).generate(text)
+    wordcloud = WordCloud().generate(text)
     wordcloud.to_file(wordcloud_path + 'wordcloud_{}.png'.format(name))
