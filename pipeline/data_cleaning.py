@@ -100,6 +100,8 @@ def clean_corpus(path, clean_data_name, is_trump=False):
     tweets = get_raw_data(path)
     all_fields, csv_fields = get_input_fields(tweets)
     # Save the tweets in a csv format
+    if not os.path.exists(main_path + 'tmp'):
+        os.makedirs(main_path + 'tmp')
     json_2_csv(tweets, main_path + "tmp/raw_tweets.csv", csv_fields)
     # Now lets read the contents of the file with pandas
     df = pd.read_csv(main_path + "tmp/raw_tweets.csv", header=0)
