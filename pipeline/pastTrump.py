@@ -94,9 +94,9 @@ def __findSplitIndex(data, date):
     return findIndex
 
 if __name__ == "__main__":
-    compareSelf()
-    #compareSelf(10, [])
-    for i in range(2):
+    #compareSelf()
+    compareSelf(0, [announcementDate, electionDate])
+    for i in range(3):
         dataPath = main_path + outputPath + str(i) + '_timeSlice.csv'
         #Creates word clouds of each timeSlice
         generate_wordcloud(dataPath, str(i) + '_sliceWordCloud')
