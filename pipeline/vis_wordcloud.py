@@ -2,7 +2,7 @@
 Create a wordcloud for an image, optionally providing a mask
 """
 
-from wordcloud import WordCloud
+from wordcloud import WordCloud, get_single_color_func
 from PIL import Image
 import os
 import pandas as pd
@@ -11,6 +11,14 @@ import numpy as np
 main_path = os.path.join(os.path.dirname(__file__), '../')
 wordcloud_path = main_path + 'img/wordclouds/'
 
+def single_color_func(color):
+    def color_func(word=None, font_size=None, position=None,
+                          orientation=None, font_path=None, random_state=None):
+        return color
+    return color_func
+
+black_color_func = single_color_func('rgb(0, 0, 0)')
+
 def generate_wordcloud(filename, name):
     ''' Generate a wordcloud given a filename and a name '''
     if not os.path.exists(wordcloud_path):
@@ -18,5 +26,11 @@ def generate_wordcloud(filename, name):
     df = pd.read_csv(filename, header=0)
     text = df['clean_text'].str.cat(sep=' ')
     stopwords = set([name]) #ignore the twitter handle when generating
-    wordcloud = WordCloud(stopwords=stopwords).generate(text)
+    wordcloud = WordCloud(
+        stopwords=stopwords, 
+        prefer_horizontal=1.0,
+        background_color="#ffffff",
+        color_func=black_color_func,
+        scale=3.0
+    ).generate(text)
     wordcloud.to_file(wordcloud_path + 'wordcloud_{}.png'.format(name))
