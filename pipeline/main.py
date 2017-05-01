@@ -36,9 +36,21 @@ parser.add_argument('--clean', dest='clean', action='store_true',
         help="Clean the tweets in the script")
 parser.add_argument('--no-clean', dest='clean', action='store_false',
         help="Skip the cleaning stage")
+parser.add_argument('--user', type=str, default=None,
+        help="Specify a single user. Defaults to all")
+parser.add_argument('-c', '--color', dest='color', action='store_true',
+        help="Specify whether to include color in the wordcloud")
+parser.add_argument('--no-color', dest='color', action='store_false',
+        help="Specify to not include color in the wordcloud")
+parser.add_argument('--sim', dest='sim', action='store_true',
+        help="Perform tf-idf similarity analysis")
+parser.add_argument('--no-sim', dest='sim', action='store_false',
+        help="Don't perform similarity analysis")
 parser.set_defaults(clean=True)
 parser.set_defaults(vec=True)
 parser.set_defaults(cloud=True)
+parser.set_defaults(color=False)
+parser.set_defaults(sim=True)
 # parse the args
 args = parser.parse_args()
 
@@ -82,17 +94,21 @@ def process_individual(handle, i):
     if args.cloud:
         clean_path = main_path + 'data/clean_data/' + handle + '.csv'
         print "Generating wordcloud"
-        generate_wordcloud(clean_path, handle)
+        generate_wordcloud(clean_path, handle, color=args.color)
 
 def main():
-    handles = [ name for name in os.listdir(data_path + 'raw_json') ]
-    # First we clean the tweets for each of the individuals
-    for i, handle in enumerate(handles):
-        #  if handle in ['agscottpruitt']: continue
-        process_individual(handle, i)
+    if args.user is not None:
+        process_individual(args.user, 0)
+    else:
+        handles = [ name for name in os.listdir(data_path + 'raw_json') ]
+        # First we clean the tweets for each of the individuals
+        for i, handle in enumerate(handles):
+            #  if handle in ['agscottpruitt']: continue
+            process_individual(handle, i)
     # TF-IDF and cosine similarity. Needs to be outside process_individual
     # because the embedding needs to look at everyone at once
-    similarity_to_trump()
+    if args.sim:
+        similarity_to_trump()
     print "Finished!"
 
 if __name__ == "__main__":
