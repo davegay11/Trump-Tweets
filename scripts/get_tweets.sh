@@ -45,38 +45,36 @@ mkdir -p "./data/tf_idf"
 mkdir -p "./img"
 
 # For each username we collect all of the tweets and save them to a file
-for username in "${usernames[@]}"; do
-  echo ""
-  echo " Collecting Tweets for $username ..."
-  echo ""
-  mkdir -p "./data/raw_json/$username"
-  for year in "${years[@]}"; do
-    echo "=============================$year============================="
-    url="http://www.trumptwitterarchive.com/data/$username/$year.json"
-    curl -s $url > "./data/raw_json/$username/tweets_$year.json"
-  done
-  # Having some issues with getting booted from the site so we sleep for a little
-  # while in between each request. You can remove and see if you have the same
-  # issue
-  sleep $((1 + RANDOM % 5))
+# for username in "${usernames[@]}"; do
+  # echo ""
+  # echo " Collecting Tweets for $username ..."
+  # echo ""
+  # mkdir -p "./data/raw_json/$username"
+  # for year in "${years[@]}"; do
+    # echo "=============================$year============================="
+    # url="http://www.trumptwitterarchive.com/data/$username/$year.json"
+    # curl -s $url > "./data/raw_json/$username/tweets_$year.json"
+  # done
+  # # Having some issues with getting booted from the site so we sleep for a little
+  # # while in between each request. You can remove and see if you have the same
+  # # issue
+  # sleep $((1 + RANDOM % 5))
+# done
+
+# Other users that were not from the Trump Twitter Archive. All you have to do
+# is place the json file in the ./data directory and add the name of the file
+# (which should be the twitter handle if there is one) in the to array below:
+other_usernames=("berniesanders" "baseline_tweets")
+
+# Iterate over each user we want to add and copy the file into raw_json
+for username in "${other_usernames[@]}"; do
+  file="./data/$username.json"
+  if test -f $file; then
+    echo "Copying $username.json into the raw_json folder"
+    mkdir -p "./data/raw_json/$username"
+    cp $file "./data/raw_json/$username/"
+  fi
 done
-
-# Move the baseline tweets to the same place as the others, in the same format
-# to make the cleaning process easier
-baseline_tweets="./data/baseline_tweets.json"
-if test -f $baseline_tweets; then
-  echo "Moving baseline tweets"
-  mkdir -p ./data/raw_json/baseline_tweets
-  mv ./data/baseline_tweets.json ./data/raw_json/baseline_tweets/
-fi
-
-berniefolder="./data/raw_json/berniesanders"
-berniefile="./data/raw_json/berniesanders/berniesanders.json"
-mkdir -p $berniefolder
-if [ ! -f $berniefile ]; then
-  echo "Moving bernie sanders to raw_json"
-  cp "./andrews_stuff/berniesanders.json" $berniefile 
-fi
 
 echo ""
 echo "All done!!!"
