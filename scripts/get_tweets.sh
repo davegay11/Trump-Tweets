@@ -3,14 +3,31 @@
 # Bash script to pull all the tweets down that were stored in the trump
 # twitter archive. Make sure to run this file from the ROOT of the project
 # like: 
-# > ./scripts/get_data.sh
+# 
+#   ./scripts/get_tweets.sh
+# 
+# You can additionally pass in the user as a parameter to only retrieve tweets
+# for a specified handle. For example:
+#
+#   ./scripts/get_tweets.sh realscottpruitt
+# 
+# Author: Zachary Marion
 
-# Get all of the accounts in the trump twitter archive
-echo "Getting the accounts"
-usernames_str=$(curl -s "http://www.trumptwitterarchive.com/data/accounts.json" | grep '"account"' | sed 's/"account": //g' | sed 's/    "//g' | sed 's/"//g' | tr "\n" " ")
-echo $usernames_str
-# Parse the usernames into a bash list to iterate over
-usernames=(${usernames_str//,/ })
+
+if [ -z "$1" ]; then
+  echo "No user specified, getting all users from the Trump Twitter Archive"
+  # Get all of the accounts in the trump twitter archive
+  usernames_str=$(curl -s "http://www.trumptwitterarchive.com/data/accounts.json" | \
+    grep '"account"' | \
+    sed 's/"account": //g' | \
+    sed 's/    "//g' | \
+    sed 's/"//g' | \
+    tr "\n" " ")
+  # Parse the usernames into a bash list to iterate over
+  usernames=(${usernames_str//,/ })
+else
+  usernames=("$1")
+fi
 
 # All the years that were available
 years=(2009 2010 2011 2012 2013 2014 2015 2016 2017)
@@ -38,6 +55,10 @@ for username in "${usernames[@]}"; do
     url="http://www.trumptwitterarchive.com/data/$username/$year.json"
     curl -s $url > "./data/raw_json/$username/tweets_$year.json"
   done
+  # Having some issues with getting booted from the site so we sleep for a little
+  # while in between each request. You can remove and see if you have the same
+  # issue
+  sleep $((1 + RANDOM % 5))
 done
 
 # Move the baseline tweets to the same place as the others, in the same format

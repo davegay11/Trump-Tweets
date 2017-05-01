@@ -15,8 +15,11 @@ def get_raw_data(path):
     tweets = []
     for filename in os.listdir(path):
         with open(path + '/' + filename) as f:
-            data = json.load(f)
-            tweets += data
+            try:
+                data = json.load(f)
+                tweets += data
+            except ValueError:
+                print("Cannot load json for {}".format(filename))
     return tweets
 
 def get_input_fields(tweets):
