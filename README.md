@@ -44,7 +44,7 @@ To clean the data and generate the models, run:
 
 By default it cleans the data, generates word2vec models, and creates wordclouds for each individual. The file is formatted as a command line utility, whose options can be found with:
 
-`/pipeline/main.py --help`
+`./pipeline/main.py --help`
 
 `fields.txt` contains an ascii table describing each field in the cleaned data and what values it can take on.
 
