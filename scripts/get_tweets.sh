@@ -44,22 +44,22 @@ mkdir -p "./data/tf_idf"
 # make sure the img folder exists
 mkdir -p "./img"
 
-# For each username we collect all of the tweets and save them to a file
-# for username in "${usernames[@]}"; do
-  # echo ""
-  # echo " Collecting Tweets for $username ..."
-  # echo ""
-  # mkdir -p "./data/raw_json/$username"
-  # for year in "${years[@]}"; do
-    # echo "=============================$year============================="
-    # url="http://www.trumptwitterarchive.com/data/$username/$year.json"
-    # curl -s $url > "./data/raw_json/$username/tweets_$year.json"
-  # done
-  # # Having some issues with getting booted from the site so we sleep for a little
-  # # while in between each request. You can remove and see if you have the same
-  # # issue
-  # sleep $((1 + RANDOM % 5))
-# done
+For each username we collect all of the tweets and save them to a file
+for username in "${usernames[@]}"; do
+  echo ""
+  echo " Collecting Tweets for $username ..."
+  echo ""
+  mkdir -p "./data/raw_json/$username"
+  for year in "${years[@]}"; do
+    echo "=============================$year============================="
+    url="http://www.trumptwitterarchive.com/data/$username/$year.json"
+    curl -s $url > "./data/raw_json/$username/tweets_$year.json"
+  done
+  # Having some issues with getting booted from the site so we sleep for a little
+  # while in between each request. You can remove and see if you have the same
+  # issue
+  sleep $((1 + RANDOM % 5))
+done
 
 # Other users that were not from the Trump Twitter Archive. All you have to do
 # is place the json file in the ./data directory and add the name of the file
